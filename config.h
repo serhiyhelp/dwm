@@ -16,7 +16,7 @@ static const char col_fg[]       = "#eee8d5";
 static const char col_sl[]       = "#cb4b16";
 static const char col_dd[]       = "#000000";
 static const char *colors[][3]      = {
-	/*                      fg         bg         border   */
+	/*                      fg      bg      border */
 	[SchemeNorm]        = { col_fg, col_bg, col_bg },
 	[SchemeSel]         = { col_fg, col_sl, col_sl },
 
@@ -43,6 +43,7 @@ static const char *fonts[] =
 static const char *const autostart[] = {
 	"dunst", NULL,
 	"picom", NULL,
+	"dwmblocks", NULL,
 	NULL /* terminate */
 };
 
@@ -63,7 +64,7 @@ static const Rule rules[] = {
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
-static int attachbelow = 1;    /* 1 means attach after the currently active window */
+static int attachbelow = 0;    /* 1 means attach after the currently active window */
 
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
@@ -104,17 +105,14 @@ static const char *dmenucmd[] = { "rofi", "-drun", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *layoutmenu_cmd = "layoutmenu.sh";
 
-/* commands spawned when clicking statusbar, the mouse button pressed is exported as BUTTON */
-static char *statuscmds[] = { "st-sound.sh", "st-backlight.sh" };
-static char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
-
 #include "movestack.c"
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY|ShiftMask,   XK_Return,    spawn,          {.v = termcmd } },
-	{ MODKEY,             XK_d,         spawn,          SHCMD("rofi -show drun")      },
-	{ MODKEY|ShiftMask,   XK_s,         spawn,           SHCMD("flameshot gui")       },
-	{ MODKEY|ShiftMask,   XK_q,         spawn,           SHCMD("manage-power.sh")       },
+	{ MODKEY,             XK_d,         spawn,          SHCMD("rofi -show drun")            },
+	{ MODKEY|ShiftMask,   XK_s,         spawn,          SHCMD("flameshot gui")              },
+	{ MODKEY|ShiftMask,   XK_q,         spawn,          SHCMD("manage-power.sh")            },
+	{ MODKEY,             XK_space,     spawn,          SHCMD("pkill -RTMIN+9 dwmblocks")   },
 
 	{ MODKEY,             XK_b,         togglebar,      {0} },
 	{ MODKEY,             XK_s,         togglesticky,   {0} },
@@ -163,11 +161,12 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        layoutmenu,     {0} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button1,        spawn,          {.v = statuscmd } },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = statuscmd } },
-	{ ClkStatusText,        0,              Button3,        spawn,          {.v = statuscmd } },
-	{ ClkStatusText,        0,              Button4,        spawn,          {.v = statuscmd } },
-	{ ClkStatusText,        0,              Button5,        spawn,          {.v = statuscmd } },
+	{ ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
+	{ ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
+	{ ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
+	{ ClkStatusText,        0,              Button4,        sigdwmblocks,   {.i = 4} },
+	{ ClkStatusText,        0,              Button5,        sigdwmblocks,   {.i = 5} },
+	{ ClkStatusText,        ShiftMask,      Button1,        sigdwmblocks,   {.i = 6} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
