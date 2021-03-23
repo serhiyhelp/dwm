@@ -13,7 +13,7 @@ static       int smartgaps          = 0;
 
 static const char col_bg[]       = "#073642";
 static const char col_fg[]       = "#eee8d5";
-static const char col_sl[]       = "#cb4b16";
+static const char col_sl[]       = "#2aa198";
 static const char col_dd[]       = "#000000";
 static const char *colors[][3]      = {
 	/*                      fg      bg      border */
@@ -68,6 +68,8 @@ static int attachbelow = 0;    /* 1 means attach after the currently active wind
 
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
+#define XF86XK_AudioLowerVolume	0x1008FF11   /* Volume control down        */
+#define XF86XK_AudioRaiseVolume	0x1008FF13   /* Volume control up          */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -113,6 +115,11 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_s,         spawn,          SHCMD("flameshot gui")              },
 	{ MODKEY|ShiftMask,   XK_q,         spawn,          SHCMD("manage-power.sh")            },
 	{ MODKEY,             XK_space,     spawn,          SHCMD("pkill -RTMIN+9 dwmblocks")   },
+	{ MODKEY,             XK_F2,        spawn,          SHCMD("v -1")              },
+	{ MODKEY,             XK_F3,        spawn,          SHCMD("v +1")              },
+	{ MODKEY,             XK_F1,        spawn,          SHCMD("v  t")              },
+	{ 0,  XF86XK_AudioLowerVolume,       spawn,          SHCMD("b -1")              },
+	{ 0,  XF86XK_AudioRaiseVolume,     spawn,          SHCMD("b +1")              },
 
 	{ MODKEY,             XK_b,         togglebar,      {0} },
 	{ MODKEY,             XK_s,         togglesticky,   {0} },
