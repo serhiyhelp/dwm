@@ -28,9 +28,9 @@ static const char *colors[][3]      = {
 
 	[SchemeStatus]      = { col_fg, col_bg, col_dd },
 };
-static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,4}, {2,3}, {0,4}, {0,0} }; /* represents the icon as an array of vertices like in grade school math */
-static const XPoint stickyiconbb    = {4,4};	/* defines the bottom right corner of the bounding box of the polygon (origin is always 0,0) */
-#define STICKYICONSH boxw + (boxw * 6 / 7) 	/* defines the height of the final, scaled polygon as it will be drawn. boxw is equal to the width of the shape */
+static const XPoint stickyicon[]    = { {0,0}, {4,0}, {4,4}, {2,3}, {0,4}, {0,0} };
+static const XPoint stickyiconbb    = {4,4};
+#define STICKYICONSH boxw + (boxw * 6 / 7)
 
 static const char *fonts[] =
 {
@@ -41,10 +41,22 @@ static const char *fonts[] =
 };
 
 static const char *const autostart[] = {
-	"dunst", NULL,
-	"picom", NULL,
-	"dwmblocks", NULL,
+	"dunst",        NULL,
+	"picom",        NULL,
+	"dwmblocks",    NULL,
 	NULL /* terminate */
+};
+
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"alacritty", "--class", "spterm", NULL };
+const char *spcmd2[] = {"alacritty", "--class", "spfm", "-e", "ncmpcpp", NULL };
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"spterm",      spcmd1},
+	{"spranger",    spcmd2},
 };
 
 /* tagging */
@@ -55,9 +67,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Alacritty",      NULL,     NULL,           0,         0,          1,           0,        -1 },
-	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
+	/* class                instance            title                   tags mask   isfloating  isterminal  noswallow   monitor */
+	{ "Alacritty",          NULL,               NULL,                   0,          0,          1,          0,          -1 },
+	{ "firefox",            "Toolkit",          "Picture-in-Picture",   0,          1,          0,          1,          -1 },
+	{ NULL,		            "spterm",		    NULL,		            SPTAG(0),   1,			1,          0,          -1 },
+	{ NULL,		            "spfm",		        NULL,		            SPTAG(1),   1,			1,          0,          -1 },
+
+	{ NULL,                 NULL,               "Event Tester",         0,          0,          0,          1,          -1 },
 };
 
 /* layout(s) */
@@ -68,8 +84,8 @@ static int attachbelow = 0;    /* 1 means attach after the currently active wind
 
 #define FORCE_VSPLIT 1  /* nrowgrid layout: force two clients to always split vertically */
 #include "vanitygaps.c"
-#define XF86XK_AudioLowerVolume	0x1008FF11   /* Volume control down        */
-#define XF86XK_AudioRaiseVolume	0x1008FF13   /* Volume control up          */
+#define XK_AudioLower   0x1008FF11   /* Volume control down        */
+#define XK_AudioRaise	0x1008FF13   /* Volume control up          */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -109,46 +125,48 @@ static const char *layoutmenu_cmd = "layoutmenu.sh";
 
 #include "movestack.c"
 static Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY|ShiftMask,   XK_Return,    spawn,          {.v = termcmd } },
-	{ MODKEY,             XK_d,         spawn,          SHCMD("rofi -show drun")            },
-	{ MODKEY|ShiftMask,   XK_s,         spawn,          SHCMD("flameshot gui")              },
-	{ MODKEY|ShiftMask,   XK_q,         spawn,          SHCMD("manage-power.sh")            },
-	{ MODKEY,             XK_space,     spawn,          SHCMD("pkill -RTMIN+9 dwmblocks")   },
-	{ MODKEY,             XK_F2,        spawn,          SHCMD("v -1")              },
-	{ MODKEY,             XK_F3,        spawn,          SHCMD("v +1")              },
-	{ MODKEY,             XK_F1,        spawn,          SHCMD("v  t")              },
-	{ 0,  XF86XK_AudioLowerVolume,       spawn,          SHCMD("b -1")              },
-	{ 0,  XF86XK_AudioRaiseVolume,     spawn,          SHCMD("b +1")              },
+	/* modifier           key               function            argument */
+	{ MODKEY|ShiftMask,   XK_Return,        spawn,              {.v = termcmd } },
+	{ MODKEY,             XK_d,             spawn,              SHCMD("rofi -show drun") },
+	{ MODKEY|ShiftMask,   XK_s,             spawn,              SHCMD("flameshot gui") },
+	{ MODKEY|ShiftMask,   XK_q,             spawn,              SHCMD("manage-power.sh") },
+	{ MODKEY,             XK_space,         spawn,              SHCMD("pkill -RTMIN+9 dwmblocks") },
+	{ MODKEY,             XK_F2,            spawn,              SHCMD("v -1") },
+	{ MODKEY,             XK_F3,            spawn,              SHCMD("v +1") },
+	{ MODKEY,             XK_F1,            spawn,              SHCMD("v  t") },
+	{ 0,                  XK_AudioLower,    spawn,              SHCMD("b -1") },
+	{ 0,                  XK_AudioRaise,    spawn,              SHCMD("b +1") },
 
-	{ MODKEY,             XK_b,         togglebar,      {0} },
-	{ MODKEY,             XK_s,         togglesticky,   {0} },
-	{ MODKEY,             XK_f,         togglefullscr,  {0} },
-	{ MODKEY,             XK_apostrophe, toggleAttachBelow,   {0} },
+	{ MODKEY,             XK_b,             togglebar,          {0} },
+	{ MODKEY,             XK_s,             togglesticky,       {0} },
+	{ MODKEY,             XK_f,             togglefullscr,      {0} },
+	{ MODKEY,             XK_apostrophe,    toggleAttachBelow,  {0} },
+	{ MODKEY,             XK_a,  	        togglescratch,      {.ui = 0 } },
+	{ MODKEY,             XK_p,	            togglescratch,      {.ui = 1 } },
 
-	{ MODKEY,             XK_minus,     incnmaster,     {.i = -1 } },
-	{ MODKEY,             XK_equal,     incnmaster,     {.i = +1 } },
+	{ MODKEY,             XK_minus,         incnmaster,         {.i = -1 } },
+	{ MODKEY,             XK_equal,         incnmaster,         {.i = +1 } },
 
-	{ MODKEY,             XK_j,         focusstack,     {.i = +1 } },
-	{ MODKEY,             XK_k,         focusstack,     {.i = -1 } },
-	{ MODKEY,             XK_h,         setmfact,       {.f = -0.05} },
-	{ MODKEY,             XK_l,         setmfact,       {.f = +0.05} },
+	{ MODKEY,             XK_j,             focusstack,         {.i = +1 } },
+	{ MODKEY,             XK_k,             focusstack,         {.i = -1 } },
+	{ MODKEY,             XK_h,             setmfact,           {.f = -0.05} },
+	{ MODKEY,             XK_l,             setmfact,           {.f = +0.05} },
 
-	{ MODKEY|ShiftMask,   XK_h,         setcfact,       {.f = +0.25} },
-	{ MODKEY|ShiftMask,   XK_l,         setcfact,       {.f = -0.25} },
-	{ MODKEY|ShiftMask,   XK_j,         movestack,      {.i = +1 } },
-	{ MODKEY|ShiftMask,   XK_k,         movestack,      {.i = -1 } },
+	{ MODKEY|ShiftMask,   XK_h,             setcfact,           {.f = +0.25} },
+	{ MODKEY|ShiftMask,   XK_l,             setcfact,           {.f = -0.25} },
+	{ MODKEY|ShiftMask,   XK_j,             movestack,          {.i = +1 } },
+	{ MODKEY|ShiftMask,   XK_k,             movestack,          {.i = -1 } },
 
-	{ MODKEY,             XK_t,         setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,             XK_m,         setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,             XK_g,         setlayout,      {.v = &layouts[7]} },
+	{ MODKEY,             XK_t,             setlayout,          {.v = &layouts[0]} },
+	{ MODKEY,             XK_m,             setlayout,          {.v = &layouts[1]} },
+	{ MODKEY,             XK_g,             setlayout,          {.v = &layouts[7]} },
 
-	{ MODKEY,             XK_0,         view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,   XK_0,         tag,            {.ui = ~0 } },
+	{ MODKEY,             XK_0,             view,               {.ui = ~0 } },
+	{ MODKEY|ShiftMask,   XK_0,             tag,                {.ui = ~0 } },
 
-	{ MODKEY,             XK_q,         killclient,     {0} },
-	{ MODKEY,             XK_Return,    zoom,           {0} },
-	{ MODKEY|ShiftMask,   XK_e,         quit,           {0} },
+	{ MODKEY,             XK_q,             killclient,         {0} },
+	{ MODKEY,             XK_Return,        zoom,               {0} },
+	{ MODKEY|ShiftMask,   XK_e,             quit,               {0} },
 
 	TAGKEYS(XK_1, 0)
 	TAGKEYS(XK_2, 1)
@@ -161,7 +179,6 @@ static Key keys[] = {
 	TAGKEYS(XK_9, 8)
 };
 
-/* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
@@ -182,4 +199,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
