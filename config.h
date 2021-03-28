@@ -68,6 +68,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class                instance            title                   tags mask   isfloating  isterminal  noswallow   monitor */
+	{ "Unity",              "Unity",            "Unity",                1 << 1,     0,          0,          0,          -1 },
 	{ "Alacritty",          NULL,               NULL,                   0,          0,          1,          0,          -1 },
 	{ "firefox",            "Toolkit",          "Picture-in-Picture",   0,          1,          0,          1,          -1 },
 	{ NULL,		            "spterm",		    NULL,		            SPTAG(0),   1,			1,          0,          -1 },
@@ -130,6 +131,7 @@ static Key keys[] = {
 	{ MODKEY,             XK_d,             spawn,              SHCMD("rofi -show drun") },
 	{ MODKEY|ShiftMask,   XK_s,             spawn,              SHCMD("flameshot gui") },
 	{ MODKEY|ShiftMask,   XK_q,             spawn,              SHCMD("manage-power.sh") },
+	{ MODKEY,             XK_w,             spawn,              SHCMD("tablet-config.sh") },
 	{ MODKEY,             XK_space,         spawn,              SHCMD("pkill -RTMIN+9 dwmblocks") },
 	{ MODKEY,             XK_F2,            spawn,              SHCMD("v -1") },
 	{ MODKEY,             XK_F3,            spawn,              SHCMD("v +1") },
