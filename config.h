@@ -12,8 +12,9 @@ static const unsigned int gappov    = 0;
 static       int smartgaps          = 0;
 
 static const char col_bg[]       = "#073642";
-static const char col_fg[]       = "#eee8d5";
+static const char col_fg[]       = "#93a1a1";
 static const char col_sl[]       = "#2aa198";
+static const char col_sf[]       = "#eee8d5";
 static const char col_dd[]       = "#000000";
 static const char *colors[][3]      = {
 	/*                      fg      bg      border */
@@ -21,7 +22,7 @@ static const char *colors[][3]      = {
 	[SchemeSel]         = { col_fg, col_sl, col_sl },
 
     [SchemeTagsNorm]    = { col_fg, col_bg, col_dd },
-	[SchemeTagsSel]     = { col_fg, col_sl, col_dd },
+	[SchemeTagsSel]     = { col_sf, col_sl, col_dd },
 
     [SchemeInfoNorm]    = { col_fg, col_bg, col_dd },
     [SchemeInfoSel]     = { col_fg, col_bg, col_dd },
@@ -71,6 +72,7 @@ static const Rule rules[] = {
 	{ "Unity",              "Unity",            "Unity",                1 << 1,     0,          0,          0,          -1 },
 	{ "Alacritty",          NULL,               NULL,                   0,          0,          1,          0,          -1 },
 	{ "firefox",            "Toolkit",          "Picture-in-Picture",   0,          1,          0,          1,          -1 },
+	{ "Yad",                "yad",              NULL,                   0,          1,          0,          1,          -1 },
 	{ NULL,		            "spterm",		    NULL,		            SPTAG(0),   1,			1,          0,          -1 },
 	{ NULL,		            "spfm",		        NULL,		            SPTAG(1),   1,			1,          0,          -1 },
 
