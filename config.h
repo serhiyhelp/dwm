@@ -52,12 +52,12 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"alacritty", "--class", "spterm", NULL };
+const char *spcmd1[] = {"tg-launch.sh", NULL };
 const char *spcmd2[] = {"alacritty", "--class", "spfm", "-e", "ncmpcpp", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
-	{"spterm",      spcmd1},
-	{"spranger",    spcmd2},
+	{"telegram-desktop",      spcmd1},
+	{"spfm",    spcmd2},
 };
 
 /* tagging */
@@ -73,7 +73,7 @@ static const Rule rules[] = {
 	{ "Alacritty",          NULL,               NULL,                   0,          0,          1,          0,          -1 },
 	{ "firefox",            "Toolkit",          "Picture-in-Picture",   0,          1,          0,          1,          -1 },
 	{ "Yad",                "yad",              NULL,                   0,          1,          0,          1,          -1 },
-	{ NULL,		            "spterm",		    NULL,		            SPTAG(0),   1,			1,          0,          -1 },
+	{ NULL,		            "telegram-desktop", NULL,		            SPTAG(0),   1,			0,          0,          -1 },
 	{ NULL,		            "spfm",		        NULL,		            SPTAG(1),   1,			1,          0,          -1 },
 
 	{ NULL,                 NULL,               "Event Tester",         0,          0,          0,          1,          -1 },
@@ -140,6 +140,7 @@ static Key keys[] = {
 	{ MODKEY,             XK_F1,            spawn,              SHCMD("v  t") },
 	{ 0,                  XK_AudioLower,    spawn,              SHCMD("b -1") },
 	{ 0,                  XK_AudioRaise,    spawn,              SHCMD("b +1") },
+	{ MODKEY,             XK_x,             spawn,              SHCMD("xkill") },
 
 	{ MODKEY,             XK_b,             togglebar,          {0} },
 	{ MODKEY,             XK_s,             togglesticky,       {0} },
