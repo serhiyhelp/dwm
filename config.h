@@ -69,10 +69,11 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class                instance            title                   tags mask   isfloating  isterminal  noswallow   monitor */
-	{ "Unity",              "Unity",            "Unity",                1 << 1,     0,          0,          0,          -1 },
+	{ "Unity",              "Unity",            "Unity",                1 << 1,     1,          0,          0,          -1 },
 	{ "Alacritty",          NULL,               NULL,                   0,          0,          1,          0,          -1 },
-	{ "firefox",            "Toolkit",          "Picture-in-Picture",   0,          1,          0,          1,          -1 },
+	{ "firefox",            "Toolkit",          "Зображення в зображенні", 0,       1,          0,          1,          -1 },
 	{ "Yad",                "yad",              NULL,                   0,          1,          0,          1,          -1 },
+	{ "jetbrains-rider",   "jetbrains-rider",   "win0",                 0,          1,          0,          1,          -1 },
 	{ NULL,		            "telegram-desktop", NULL,		            SPTAG(0),   1,			0,          0,          -1 },
 	{ NULL,		            "spfm",		        NULL,		            SPTAG(1),   1,			1,          0,          -1 },
 
