@@ -70,6 +70,7 @@ static const Rule rules[] = {
 	 */
 	/* class                instance            title                   tags mask   isfloating  isterminal  noswallow   monitor */
 	{ "Unity",              "Unity",            "Unity",                1 << 1,     1,          0,          0,          -1 },
+	{ "Matplotlib",         "matplotlib",       NULL,                   0,          0,          0,          1,          -1 },
 	{ "Alacritty",          NULL,               NULL,                   0,          0,          1,          0,          -1 },
 	{ "firefox",            "Toolkit",          "Зображення в зображенні", 0,       1,          0,          1,          -1 },
 	{ "Yad",                "yad",              NULL,                   0,          1,          0,          1,          -1 },
