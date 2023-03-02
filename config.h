@@ -16,6 +16,15 @@ static const char col_fg[]       = "#93a1a1";
 static const char col_sl[]       = "#2aa198";
 static const char col_sf[]       = "#eee8d5";
 static const char col_dd[]       = "#000000";
+
+/*
+static const char col_bg[]       = "#fdf6e3";
+static const char col_fg[]       = "#586e75";
+static const char col_sl[]       = "#b58900";
+static const char col_sf[]       = "#073642";
+static const char col_dd[]       = "#000000";
+*/
+
 static const char *colors[][3]      = {
 	/*                      fg      bg      border */
 	[SchemeNorm]        = { col_fg, col_bg, col_bg },
@@ -136,6 +145,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_s,             spawn,              SHCMD("flameshot gui") },
 	{ MODKEY|ShiftMask,   XK_q,             spawn,              SHCMD("manage-power.sh") },
 	{ MODKEY|ShiftMask,   XK_w,             spawn,              SHCMD("tablet-config.sh") },
+	{ MODKEY|ShiftMask,   XK_p,             spawn,              SHCMD("xcolor -s") },
 	{ MODKEY,             XK_w,             spawn,              SHCMD("recorder.sh") },
 	{ MODKEY,             XK_space,         spawn,              SHCMD("pkill -RTMIN+9 dwmblocks") },
 	{ MODKEY,             XK_F2,            spawn,              SHCMD("v -1") },
