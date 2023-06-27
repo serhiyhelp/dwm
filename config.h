@@ -146,6 +146,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,   XK_q,             spawn,              SHCMD("manage-power.sh") },
 	{ MODKEY|ShiftMask,   XK_w,             spawn,              SHCMD("tablet-config.sh") },
 	{ MODKEY|ShiftMask,   XK_p,             spawn,              SHCMD("xcolor -s") },
+	{ MODKEY|ShiftMask,   XK_m,             spawn,              SHCMD("quick-trans.sh") },
 	{ MODKEY,             XK_w,             spawn,              SHCMD("recorder.sh") },
 	{ MODKEY,             XK_space,         spawn,              SHCMD("pkill -RTMIN+9 dwmblocks") },
 	{ MODKEY,             XK_F2,            spawn,              SHCMD("v -1") },
