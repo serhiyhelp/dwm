@@ -392,6 +392,10 @@ applyrules(Client *c)
 			if (m)
 				c->mon = m;
 		}
+
+		if (strstr("GPlates", class) && !strstr(c->name, "GPlates")) {
+			c->isfloating = 1;
+		}
 	}
 	if (ch.res_class)
 		XFree(ch.res_class);
