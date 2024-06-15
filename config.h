@@ -82,8 +82,9 @@ static const Rule rules[] = {
 	{ "Alacritty",          NULL,               NULL,                   0,          0,          1,          0,          -1 },
 	{ "firefox",            "Toolkit",          "Зображення в зображенні", 0,       1,          0,          1,          -1 },
 	{ "Yad",                "yad",              NULL,                   0,          1,          0,          1,          -1 },
-	{ "Zenity",             "zenity",           NULL,                   0,          1,          0,          1,          -1 },
+	{ "zenity",             "zenity",           NULL,                   0,          1,          0,          1,          -1 },
 	{ "jetbrains-rider",   "jetbrains-rider",   "win0",                 0,          1,          0,          1,          -1 },
+	{ "debug",				NULL,				NULL,                 	0,          1,          0,          1,          -1 },
 	{ NULL,		            "telegram-desktop", NULL,		            SPTAG(0),   1,			0,          0,          -1 },
 	{ NULL,		            "spfm",		        NULL,		            SPTAG(1),   1,			1,          0,          -1 },
 
@@ -100,6 +101,7 @@ static int attachbelow = 0;    /* 1 means attach after the currently active wind
 #include "vanitygaps.c"
 #define XK_AudioLower   0x1008FF11   /* Volume control down        */
 #define XK_AudioRaise	0x1008FF13   /* Volume control up          */
+#define XK_AudioPlay	0x1008ff14   /* Volume control up          */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -154,7 +156,9 @@ static Key keys[] = {
 	{ MODKEY,             XK_F1,            spawn,              SHCMD("v  t") },
 	{ 0,                  XK_AudioLower,    spawn,              SHCMD("b -1") },
 	{ 0,                  XK_AudioRaise,    spawn,              SHCMD("b +1") },
+	{ 0,                  XK_AudioPlay,     spawn,              SHCMD("p") },
 	{ MODKEY,             XK_x,             spawn,              SHCMD("xkill") },
+	{ MODKEY|Mod1Mask,    XK_j,             spawn,              SHCMD("jp-detect.sh") },
 
 	{ MODKEY,             XK_b,             togglebar,          {0} },
 	{ MODKEY,             XK_s,             togglesticky,       {0} },
