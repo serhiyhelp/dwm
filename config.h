@@ -1,9 +1,9 @@
-static const unsigned int borderpx  = 4;
-static const unsigned int snap      = 32;
+static const unsigned int borderpx  = 2;
+static const unsigned int snap      = 27;
 static const int swallowfloating    = 0;
 static const int showbar            = 1;
 static const int topbar             = 1;
-static const int user_bh            = 30;
+static const int user_bh            = 25;
 
 static const unsigned int gappih    = 0;
 static const unsigned int gappiv    = 0;
@@ -11,10 +11,11 @@ static const unsigned int gappoh    = 0;
 static const unsigned int gappov    = 0;
 static       int smartgaps          = 0;
 
-static const char col_bg[]       = "#073642";
-static const char col_fg[]       = "#93a1a1";
-static const char col_sl[]       = "#2aa198";
-static const char col_sf[]       = "#eee8d5";
+static const char col_deep[]     = "#1e2326";
+static const char col_bg[]       = "#272e33";
+static const char col_fg[]       = "#d3c6aa";
+static const char col_sl[]       = "#a7c080";
+static const char col_sf[]       = "#1e2326";
 static const char col_dd[]       = "#000000";
 
 /*
@@ -27,7 +28,7 @@ static const char col_dd[]       = "#000000";
 
 static const char *colors[][3]      = {
 	/*                      fg      bg      border */
-	[SchemeNorm]        = { col_fg, col_bg, col_bg },
+	[SchemeNorm]        = { col_fg, col_bg, col_deep },
 	[SchemeSel]         = { col_fg, col_sl, col_sl },
 
     [SchemeTagsNorm]    = { col_fg, col_bg, col_dd },
@@ -44,10 +45,10 @@ static const XPoint stickyiconbb    = {4,4};
 
 static const char *fonts[] =
 {
-    "Fantasque Sans Mono:size=8",
-    "Material Icons:size=10",
-    "FontAwesome:size=10",
-    "Noto Color Emoji:size=10"
+    "Open Sans:size=7",
+    "Material Icons:size=9",
+    "FontAwesome:size=9",
+    "Noto Color Emoji:size=9"
 };
 
 static const char *const autostart[] = {
@@ -85,7 +86,7 @@ static const Rule rules[] = {
 	{ "zenity",             "zenity",           NULL,                   0,          1,          0,          1,          -1 },
 	{ "jetbrains-rider",   "jetbrains-rider",   "win0",                 0,          1,          0,          1,          -1 },
 	{ "debug",				NULL,				NULL,                 	0,          1,          0,          1,          -1 },
-	{ NULL,		            "telegram-desktop", NULL,		            SPTAG(0),   1,			0,          0,          -1 },
+	{ NULL,		            "Telegram", 		NULL,		            SPTAG(0),   1,			0,          0,          -1 },
 	{ NULL,		            "spfm",		        NULL,		            SPTAG(1),   1,			1,          0,          -1 },
 
 	{ NULL,                 NULL,               "Event Tester",         0,          0,          0,          1,          -1 },
