@@ -36,6 +36,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xproto.h>
 #include <X11/Xutil.h>
+#include <linux/limits.h>
 #ifdef XINERAMA
 #include <X11/extensions/Xinerama.h>
 #endif /* XINERAMA */
@@ -2094,15 +2095,73 @@ sigchld(int unused)
     }
 }
 
+// Given a pid, return its cwd to buf
+int
+getpidcwd(pid_t pid, char* buf, size_t buf_size)
+{
+	static const int proc_max = 20; // '/proc/4194304/cwd'
+	int sn_ret;
+	ssize_t rl_ret;
+	char path[proc_max];
+
+	sn_ret = snprintf(path, proc_max, "/proc/%d/cwd", pid);
+	if(sn_ret < 0 || sn_ret >= proc_max)
+		return -1;
+
+	rl_ret = readlink(path, buf, buf_size);
+	if(rl_ret < 0 || rl_ret == buf_size)
+		return -1;
+
+	buf[rl_ret] = 0;
+	return 0;
+}
+
+// Given a pid, return a reasonable guess at its child pid
+pid_t
+getchildpid(pid_t pid)
+{
+	// '/proc/4194304/task/4194304/children'
+	static const int proc_max = 40;
+	int sn_ret;
+	char path[proc_max];
+	FILE* f;
+
+	// guessing tid == pid
+	sn_ret = snprintf(path, proc_max, "/proc/%d/task/%d/children", pid, pid);
+	if (sn_ret < 0 || sn_ret >= proc_max)
+		return -1;
+
+	f = fopen(path, "r");
+	if(f == NULL)
+		return -1;
+
+	// guess first child
+	if(fscanf(f, "%d ", &pid) != 1)
+		return -1;
+
+	return pid;
+}
+
+
 void
 spawn(const Arg *arg)
 {
+	char sel_cwd[PATH_MAX];
+
     if (arg->v == dmenucmd)
         dmenumon[0] = '0' + selmon->num;
     if (fork() == 0) {
         if (dpy)
             close(ConnectionNumber(dpy));
         setsid();
+
+		if (arg->v == termcmd &&
+				selmon->sel &&
+				selmon->sel->pid > 0 &&
+				getpidcwd(getchildpid(selmon->sel->pid), sel_cwd, PATH_MAX) == 0) {
+			chdir(sel_cwd);
+		}
+
         execvp(((char **)arg->v)[0], (char **)arg->v);
         fprintf(stderr, "dwm: execvp %s", ((char **)arg->v)[0]);
         perror(" failed");
